@@ -1,4 +1,7 @@
 #!/bin/bash
+
+. ./personal_details				# source a file with personal details
+
 HOSTS="10.0.0.3 10.0.0.2 10.0.0.11"
 COUNT=4
 NOTIFICATIONFILE=/tmp/numberOfTimesNotified
@@ -35,11 +38,11 @@ printf "$msgUp"												# send this to logs
 if [ "$sendNotifications" = true ]; then
 	((notification_number=notification_number+1))
 	echo $notification_number > $NOTIFICATIONFILE
-	printf "$msgDown" | mail -s "510 Internet Server(s) DOWN" ithelper@pjakey.com
+	printf "$msgDown" | mail -s "510 Internet Server(s) DOWN" $TOEMAILADDRESS
 fi
 
 if [ "$sendAllClear" = true ]; then
 	# Only reset the count if all services have been restored
 	[[ $sendNotifications != true ]] && echo 0 > $NOTIFICATIONFILE
-	printf "$msgUp" | mail -s "510 Internet Server(s) back UP" ithelper@pjakey.com
+	printf "$msgUp" | mail -s "510 Internet Server(s) back UP" $TOEMAILADDRESS
 fi
